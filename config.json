@@ -1,6 +1,6 @@
 {
-  "maintenance": true,
+  "maintenance": false,
   "title": "Hệ thống đang bảo trì",
-  "message": "Chúng tôi đang nâng cấp hệ thống. Vui lòng quay lại sau. Xin cảm ơn",
-  "estimatedEndTime": "20:00 19/02/2027"
+  "message": "Chúng tôi đang nâng cấp hệ thống. Vui lòng quay lại sau.",
+  "estimatedEndTime": null
 }
