@@ -1,0 +1,69 @@
+name: Maintenance Control
+
+on:
+  workflow_dispatch:
+    inputs:
+      maintenance:
+        description: "Maintenance status"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+      title:
+        description: "Title"
+        required: true
+        default: "Hệ thống đang bảo trì"
+
+      message:
+        description: "Message"
+        required: true
+        default: "Chúng tôi đang nâng cấp hệ thống. Vui lòng quay lại sau."
+
+      estimatedEndTime:
+        description: "Estimated end time"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-config:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update config
+        env:
+          MAINTENANCE: ${{ inputs.maintenance }}
+          TITLE: ${{ inputs.title }}
+          MESSAGE: ${{ inputs.message }}
+          END_TIME: ${{ inputs.estimatedEndTime }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+
+          config = {
+              "maintenance": os.environ["MAINTENANCE"] == "true",
+              "title": os.environ["TITLE"],
+              "message": os.environ["MESSAGE"],
+              "estimatedEndTime": os.environ["END_TIME"] or None
+          }
+
+          with open("config.json", "w", encoding="utf-8") as f:
+              json.dump(config, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          PY
+
+      - name: Commit config
+        run: |
+          git config user.name "maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+
+          git add config.json
+          git commit -m "Update maintenance status" || exit 0
+          git push
