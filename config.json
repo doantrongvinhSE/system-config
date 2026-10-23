@@ -1,6 +1,6 @@
 {
-  "maintenance": true,
+  "maintenance": false,
   "title": "Hệ thống đang bảo trì",
-  "message": "Server mất điện, ae thông cảm. Mai hoạt động bình thường!",
-  "estimatedEndTime": "05:00 22/10/2026"
+  "message": "Chúng tôi đang nâng cấp hệ thống. Vui lòng quay lại sau.",
+  "estimatedEndTime": null
 }
